@@ -2,6 +2,7 @@
   "name": "todoapp",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://playground.acbw.me/react/todo",
   "dependencies": {
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
