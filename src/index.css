@@ -93,17 +93,57 @@ img {
   background-position: 0 0; }
 
 .todo-item {
+  position: relative;
   padding: 5px 6px; }
 
 .todo-check {
   margin-right: 8px; }
 
+.todo-check--input {
+  margin-right: 6px; }
+
 .todo-text {
   padding-left: 16px;
   color: #545454; }
 
+.todo-remove-span {
+  position: absolute;
+  right: 8px;
+  top: 2px; }
+
+.todo-remove-img {
+  width: 21px;
+  height: 21px; }
+
 .todo-button-img {
   width: 21px;
   height: 21px; }
+
+.todo-button-img--input {
+  width: 22px;
+  height: 22px; }
+
+.todo-input-wrap {
+  display: flex;
+  padding: 4px 6px; }
+
+.todo-input-span {
+  flex: 1;
+  padding-left: 16px; }
+
+.todo-input {
+  width: 100%;
+  background-color: #e0dbd0;
+  border-radius: 4px;
+  border-top: 1px solid #a7a7a7;
+  border-left: 1px solid #d0d0d0;
+  border-right: 1px solid #d0d0d0;
+  border-bottom: 1px solid white;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Hiragino Kaku Gothic Pro", Meiryo, "Malgun Gothic", "Helvetica Neue", sans-serif;
+  padding: 4px;
+  color: #545454; }
+  .todo-input::placeholder {
+    font-style: italic;
+    color: #909090; }
 
 /*# sourceMappingURL=index.css.map */
