@@ -1,0 +1,58 @@
+$jp-font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Hiragino Kaku Gothic Pro", Meiryo, "Malgun Gothic", "Helvetica Neue", sans-serif;
+.body {
+  background-color: #515765;
+  font-family: $jp-font;
+}
+.root {
+  height: 100%;
+}
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.header-txt {
+  text-align: center;
+  color: white;
+  background: linear-gradient(to bottom, #5f78a3 0%,#414863 100%);
+  padding: 12px 0;
+  border-top: 1px solid #a1b0ca;
+  border-right: 1px solid #6d7ea1;
+  border-left: 1px solid #6d7ea1;
+  border-bottom: 1px solid #23262f;
+}
+.header-day {
+  margin-right: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  text-shadow: 0 1px #000000;
+}
+.header-date {
+  font-size: 1em;
+  text-shadow: 0 1px #000000;
+}
+.todo-wrap {
+  flex: 1;
+  background-image: url("https://s3-ap-southeast-1.amazonaws.com/acbw/paper_bg.png");
+  background-repeat: repeat;
+  background-size: 960px;
+  background-position: 0 0;
+}
+.todo-item {
+  padding: 5px 6px;
+}
+.todo-check {
+  margin-right: 8px;
+}
+.todo-text {
+  padding-left: 16px;
+  color: #545454;
+}
+.todo-button-img {
+  width: 21px;
+  height: 21px;
+}
