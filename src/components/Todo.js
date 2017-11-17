@@ -18,10 +18,15 @@ class TodoListItem extends Component {
   constructor(props) {
     super(props);
     this._onClick = this._onClick.bind(this);
+    this.removeTodo = this.removeTodo.bind(this);
   }
 
-  _onClick(e) {
+  _onClick() {
     this.props.toggleTodo(this.props.todo)
+  }
+
+  removeTodo() {
+    this.props.removeTodo(this.props.todo);
   }
 
   render() {
@@ -39,7 +44,11 @@ class TodoListItem extends Component {
         </span>
         <span className={"todo-text "+todoStateClass}>{this.props.todo.value}</span>
         <span className="todo-remove-span">
-          <img src={buttonRemove} alt="todo delete" className="todo-remove-img" />
+          <img
+            src={buttonRemove}
+            alt="todo delete"
+            className="todo-remove-img"
+            onClick={this.removeTodo} />
         </span>
       </li>
     )
@@ -53,7 +62,8 @@ const TodoList = (props) => (
         <TodoListItem
           key={todo.id}
           todo={todo}
-          toggleTodo={props.toggleTodo} />
+          toggleTodo={props.toggleTodo}
+          removeTodo={props.removeTodo} />
       )
     })}
   </ul>
@@ -88,7 +98,6 @@ class Todo extends Component {
     this.toggleTodo = this.toggleTodo.bind(this);
     this.gotData = this.gotData.bind(this);
     this.updateInput = this.updateInput.bind(this);
-    this.updateFirebase = this.updateFirebase.bind(this);
     this.pressEnter = this.pressEnter.bind(this);
   }
 
@@ -144,6 +153,10 @@ class Todo extends Component {
     }
   }
 
+  removeTodo(todoItem) {
+    firebase.database().ref('/todos/'+todoItem.id).remove()
+  }
+
   pressEnter(e) {
     const keyCode = e.keyCode || e.which;
     if (keyCode === 13) {
@@ -155,7 +168,10 @@ class Todo extends Component {
     return(
       <div className="todo-wrap">
         <div className="torn-paper"></div>
-        <TodoList todos={this.state.todos} toggleTodo={this.toggleTodo}/>
+        <TodoList
+          todos={this.state.todos}
+          toggleTodo={this.toggleTodo}
+          removeTodo={this.removeTodo} />
         <TodoInput
           todoinput={this.state.todoinput}
           updateInput={this.updateInput}
