@@ -78,14 +78,38 @@ class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: [
-        {"id": "string1", "active": false, "value": "eat bananas"},
-        {"id": "string2", "active": false, "value": "bake potatoes"},
-        {"id": "string3", "active": true, "value": "fry bacon"},
-      ],
+      todos: [],
       todoinput: "",
     }
     this.toggleTodo = this.toggleTodo.bind(this)
+    this.gotData = this.gotData.bind(this)
+  }
+
+  componentDidMount() {
+    const todoDB = firebase.database();
+    const todoRef = todoDB.ref('todos');
+    todoRef.on("value", this.gotData, this.errData);
+  }
+
+  gotData(data) {
+    const listTodos = data.val();
+    let newArray = [];
+    for(const key in listTodos) {
+      let dataObject = {
+        "id": key,
+        "active": listTodos[key].active,
+        "value": listTodos[key].value,
+      }
+      newArray.push(dataObject);
+    }
+    this.setState({
+      todos: newArray,
+    });
+  }
+
+  errData(err) {
+    console.log("Error!");
+    console.log(err);
   }
 
   toggleTodo(clicked) {
