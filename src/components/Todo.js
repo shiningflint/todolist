@@ -21,7 +21,7 @@ class TodoListItem extends Component {
   }
 
   _onClick(e) {
-    this.props.toggleTodo(this.props.todo.id)
+    this.props.toggleTodo(this.props.todo)
   }
 
   render() {
@@ -112,16 +112,9 @@ class Todo extends Component {
     console.log(err);
   }
 
-  toggleTodo(clicked) {
-    let newArray = this.state.todos.map((todo) => {
-      if (clicked === todo.id) {
-        todo.active = !todo.active
-      }
-      return todo;
-    });
-    this.setState({
-      todos: newArray,
-    });
+  toggleTodo(todoItem) {
+    firebase.database().ref('/todos/'+todoItem.id+"/active")
+      .set(!todoItem.active)
   }
 
   render() {
