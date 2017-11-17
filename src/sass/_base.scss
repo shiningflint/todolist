@@ -15,6 +15,11 @@ $jp-font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Pin
   max-width: 640px;
   margin: 0 auto;
 }
+.header-wrap {
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+}
 .header-txt {
   text-align: center;
   color: white;
@@ -36,11 +41,26 @@ $jp-font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Pin
   text-shadow: 0 1px #000000;
 }
 .todo-wrap {
+  position: relative;
   flex: 1;
   background-image: url("https://s3-ap-southeast-1.amazonaws.com/acbw/paper_bg.png");
   background-repeat: repeat;
   background-size: 960px;
+  background-position: 0 10px;
+}
+.torn-paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background-image: url("https://s3-ap-southeast-1.amazonaws.com/acbw/torn_paper.png");
+  background-repeat: no-repeat;
+  background-size: 960px;
   background-position: 0 0;
+}
+.todo-ul {
+  margin-top: 10px;
 }
 .todo-item {
   position: relative;
@@ -55,6 +75,10 @@ $jp-font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Pin
 .todo-text {
   padding-left: 16px;
   color: #545454;
+  &.active {
+    text-decoration: line-through;
+    color: #b9b5ac;
+  }
 }
 .todo-remove-span {
   position: absolute;
