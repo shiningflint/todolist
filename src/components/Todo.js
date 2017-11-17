@@ -4,6 +4,15 @@ import upBtn from '../images/up_arrow.svg';
 import buttonGreen from '../images/button_green.svg';
 import buttonRemove from '../images/button_close.svg';
 import PropTypes from 'prop-types';
+import firebase from 'firebase';
+firebase.initializeApp({
+  apiKey: "AIzaSyCUtF_WXn5avNg1IDSTOMofbn29QBwMU_Y",
+  authDomain: "web-test-project-3049e.firebaseapp.com",
+  databaseURL: "https://web-test-project-3049e.firebaseio.com",
+  projectId: "web-test-project-3049e",
+  storageBucket: "web-test-project-3049e.appspot.com",
+  messagingSenderId: "620721885462"
+});
 
 class TodoListItem extends Component {
   constructor(props) {
@@ -12,7 +21,7 @@ class TodoListItem extends Component {
   }
 
   _onClick(e) {
-    this.props.toggleTodo(this.props.index)
+    this.props.toggleTodo(this.props.todo.id)
   }
 
   render() {
@@ -39,11 +48,10 @@ class TodoListItem extends Component {
 
 const TodoList = (props) => (
   <ul className="todo-ul">
-    { props.todos.map((todo, index) => {
+    { props.todos.map((todo) => {
       return(
         <TodoListItem
-          key={index}
-          index={index}
+          key={todo.id}
           todo={todo}
           toggleTodo={props.toggleTodo} />
       )
@@ -71,9 +79,9 @@ class Todo extends Component {
     super(props);
     this.state = {
       todos: [
-        {"active": false, "value": "eat bananas"},
-        {"active": false, "value": "bake potatoes"},
-        {"active": true, "value": "fry bacon"},
+        {"id": "string1", "active": false, "value": "eat bananas"},
+        {"id": "string2", "active": false, "value": "bake potatoes"},
+        {"id": "string3", "active": true, "value": "fry bacon"},
       ],
       todoinput: "",
     }
@@ -81,9 +89,9 @@ class Todo extends Component {
   }
 
   toggleTodo(clicked) {
-    let newArray = this.state.todos.map((todo, index) => {
-      if (clicked === index) {
-        todo.active = !this.state.todos[index].active
+    let newArray = this.state.todos.map((todo) => {
+      if (clicked === todo.id) {
+        todo.active = !todo.active
       }
       return todo;
     });
@@ -109,7 +117,6 @@ TodoList.propTypes = {
 }
 
 TodoListItem.propTypes = {
-  index: PropTypes.number,
   todo: PropTypes.object,
   toggleTodo: PropTypes.func,
 }
