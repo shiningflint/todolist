@@ -17,8 +17,14 @@ firebase.initializeApp({
 class TodoListItem extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      updateinput: this.props.todo.value,
+    };
     this._onClick = this._onClick.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
+    this.updateTodo = this.updateTodo.bind(this);
+    this.changeInput = this.changeInput.bind(this);
+    this.enterInput = this.enterInput.bind(this);
   }
 
   _onClick() {
@@ -29,10 +35,44 @@ class TodoListItem extends Component {
     this.props.removeTodo(this.props.todo);
   }
 
+  updateTodo() {
+    this.props.updateTodo(this.props.todo);
+  }
+
+  changeInput(e) {
+    this.setState({
+      updateinput: e.target.value,
+    });
+  }
+
+  enterInput(e) {
+    const keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+      this.updateFirebase()
+    }
+  }
+
+  updateFirebase() {
+    this.props.updateTodoValue(this.state.updateinput, this.props.todo);
+    this.setState({
+      update: false,
+    });
+  }
+
   render() {
-    let todoState = this.props.todo.active;
-    let buttonState = (todoState ? buttonGreen : buttonPic);
-    let todoStateClass = (todoState ? "active" : "");
+    const todoState = this.props.todo.active;
+    const buttonState = (todoState ? buttonGreen : buttonPic);
+    const todoStateClass = (todoState ? "active" : "");
+    let todoContent = this.state.updateinput;
+    if (this.props.todo.id === this.props.inputTodo) {
+      todoContent = <input
+        type="text"
+        className="todo-input todo-input--edit"
+        value={this.state.updateinput}
+        onChange={this.changeInput}
+        onKeyPress={this.enterInput}
+        autoFocus />
+    }
     return(
       <li className="todo-item">
         <span className="todo-check">
@@ -42,7 +82,11 @@ class TodoListItem extends Component {
             className="todo-button-img"
             onClick={this._onClick} />
         </span>
-        <span className={"todo-text "+todoStateClass}>{this.props.todo.value}</span>
+        <span
+          className={"todo-text "+todoStateClass}
+          onClick={this.updateTodo}>
+          {todoContent}
+        </span>
         <span className="todo-remove-span">
           <img
             src={buttonRemove}
@@ -63,7 +107,10 @@ const TodoList = (props) => (
           key={todo.id}
           todo={todo}
           toggleTodo={props.toggleTodo}
-          removeTodo={props.removeTodo} />
+          removeTodo={props.removeTodo}
+          updateTodoValue={props.updateTodoValue}
+          updateTodo={props.updateTodo}
+          inputTodo={props.inputTodo} />
       )
     })}
   </ul>
@@ -94,11 +141,13 @@ class Todo extends Component {
     this.state = {
       todos: [],
       todoinput: "",
+      updatetodo: "",
     }
     this.toggleTodo = this.toggleTodo.bind(this);
     this.gotData = this.gotData.bind(this);
     this.updateInput = this.updateInput.bind(this);
     this.pressEnter = this.pressEnter.bind(this);
+    this.updateTodo = this.updateTodo.bind(this);
   }
 
   componentDidMount() {
@@ -164,6 +213,18 @@ class Todo extends Component {
     }
   }
 
+  updateTodoValue(theInput, todoItem) {
+    firebase.database().ref('/todos/'+todoItem.id+"/value")
+      .set(theInput)
+  }
+
+  updateTodo(todoItem) {
+    console.log(todoItem);
+    this.setState({
+      updatetodo: todoItem.id,
+    });
+  }
+
   render() {
     return(
       <div className="todo-wrap">
@@ -171,7 +232,10 @@ class Todo extends Component {
         <TodoList
           todos={this.state.todos}
           toggleTodo={this.toggleTodo}
-          removeTodo={this.removeTodo} />
+          removeTodo={this.removeTodo}
+          updateTodoValue={this.updateTodoValue}
+          updateTodo={this.updateTodo}
+          inputTodo={this.state.updatetodo} />
         <TodoInput
           todoinput={this.state.todoinput}
           updateInput={this.updateInput}

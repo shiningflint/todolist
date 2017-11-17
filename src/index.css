@@ -113,6 +113,7 @@ img {
   margin-top: 10px; }
 
 .todo-item {
+  display: flex;
   position: relative;
   padding: 5px 6px; }
 
@@ -123,6 +124,7 @@ img {
   margin-right: 6px; }
 
 .todo-text {
+  flex: 1;
   padding-left: 16px;
   color: #545454; }
   .todo-text.active {
@@ -168,5 +170,8 @@ img {
   .todo-input::placeholder {
     font-style: italic;
     color: #909090; }
+
+.todo-input--edit {
+  padding: 2px 4px; }
 
 /*# sourceMappingURL=index.css.map */
