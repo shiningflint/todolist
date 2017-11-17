@@ -63,13 +63,17 @@ const TodoInput = (props) => (
   <div className="todo-input-wrap">
     <span className="todo-check todo-check--input">
       <img src={upBtn} alt="todo button"
-        className="todo-button-img todo-button-img--input" />
+        className="todo-button-img todo-button-img--input"
+        onClick={props.updateFirebase} />
     </span>
     <span className="todo-input-span">
       <input
         type="text"
         className="todo-input"
-        placeholder="Type a new task..."/>
+        placeholder="Type a new task..."
+        value={props.todoinput}
+        onChange={props.updateInput}
+        onKeyPress={props.pressEnter} />
     </span>
   </div>
 )
@@ -81,8 +85,11 @@ class Todo extends Component {
       todos: [],
       todoinput: "",
     }
-    this.toggleTodo = this.toggleTodo.bind(this)
-    this.gotData = this.gotData.bind(this)
+    this.toggleTodo = this.toggleTodo.bind(this);
+    this.gotData = this.gotData.bind(this);
+    this.updateInput = this.updateInput.bind(this);
+    this.updateFirebase = this.updateFirebase.bind(this);
+    this.pressEnter = this.pressEnter.bind(this);
   }
 
   componentDidMount() {
@@ -117,12 +124,43 @@ class Todo extends Component {
       .set(!todoItem.active)
   }
 
+  updateInput(e) {
+    this.setState({
+      todoinput: e.target.value,
+    });
+  }
+
+  updateFirebase() {
+    if (this.state.todoinput !== "") {
+      const newData = {
+        active: false,
+        value: this.state.todoinput,
+      };
+      const theDB = firebase.database().ref('todos');
+      theDB.push(newData);
+      this.setState({
+        todoinput: "",
+      });
+    }
+  }
+
+  pressEnter(e) {
+    const keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+      this.updateFirebase()
+    }
+  }
+
   render() {
     return(
       <div className="todo-wrap">
         <div className="torn-paper"></div>
         <TodoList todos={this.state.todos} toggleTodo={this.toggleTodo}/>
-        <TodoInput />
+        <TodoInput
+          todoinput={this.state.todoinput}
+          updateInput={this.updateInput}
+          updateFirebase={this.updateFirebase}
+          pressEnter={this.pressEnter} />
       </div>
     )
   }
@@ -136,6 +174,10 @@ TodoList.propTypes = {
 TodoListItem.propTypes = {
   todo: PropTypes.object,
   toggleTodo: PropTypes.func,
+}
+
+TodoInput.propTypes = {
+  todoinput: PropTypes.string,
 }
 
 export default Todo;
