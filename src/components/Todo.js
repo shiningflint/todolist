@@ -17,8 +17,11 @@ firebase.initializeApp({
 class TodoListItem extends Component {
   constructor(props) {
     super(props);
+    this.state = { inputvalue: this.props.todo.value };
     this._onClick = this._onClick.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
+    this.updateInput = this.updateInput.bind(this);
+    this.selectTodo = this.selectTodo.bind(this);
   }
 
   _onClick() {
@@ -29,10 +32,41 @@ class TodoListItem extends Component {
     this.props.removeTodo(this.props.todo);
   }
 
+  updateInput(e) {
+    this.setState({
+      inputvalue: e.target.value,
+    })
+  }
+
+  selectTodo() {
+    this.props.updateTodoSelected(this.props.todo.id);
+  }
+
   render() {
-    let todoState = this.props.todo.active;
-    let buttonState = (todoState ? buttonGreen : buttonPic);
-    let todoStateClass = (todoState ? "active" : "");
+    const todoState = this.props.todo.active;
+    const buttonState = (todoState ? buttonGreen : buttonPic);
+    const todoStateClass = (todoState ? "active" : "");
+    const todoValue = (todoSelected, todoID) => {
+      if (todoSelected === todoID) {
+        return (
+          <span className={"todo-text "+todoStateClass}>
+            <input
+              className="todo-input todo-input--edit"
+              value={this.state.inputvalue}
+              onChange={ this.updateInput } />
+          </span>
+        )
+      } else {
+        return (
+          <span
+            className={"todo-text "+todoStateClass}
+            onClick={this.selectTodo} >
+            {this.props.todo.value}
+          </span>
+        )
+      }
+    }
+
     return(
       <li className="todo-item">
         <span className="todo-check">
@@ -42,7 +76,7 @@ class TodoListItem extends Component {
             className="todo-button-img"
             onClick={this._onClick} />
         </span>
-        <span className={"todo-text "+todoStateClass}>{this.props.todo.value}</span>
+        { todoValue(this.props.todoSelected, this.props.todo.id) }
         <span className="todo-remove-span">
           <img
             src={buttonRemove}
@@ -63,7 +97,9 @@ const TodoList = (props) => (
           key={todo.id}
           todo={todo}
           toggleTodo={props.toggleTodo}
-          removeTodo={props.removeTodo} />
+          removeTodo={props.removeTodo}
+          todoSelected={props.todoSelected}
+          updateTodoSelected={props.updateTodoSelected} />
       )
     })}
   </ul>
@@ -94,12 +130,14 @@ class Todo extends Component {
     this.state = {
       todos: [],
       todoinput: "",
+      todoselected: "",
     }
     this.toggleTodo = this.toggleTodo.bind(this);
     this.gotData = this.gotData.bind(this);
     this.updateInput = this.updateInput.bind(this);
     this.pressEnter = this.pressEnter.bind(this);
     this.updateFirebase = this.updateFirebase.bind(this);
+    this.updateTodoSelected = this.updateTodoSelected.bind(this);
   }
 
   componentDidMount() {
@@ -140,6 +178,12 @@ class Todo extends Component {
     });
   }
 
+  updateTodoSelected(value) {
+    this.setState({
+      todoselected: value,
+    });
+  }
+
   updateFirebase() {
     if (this.state.todoinput !== "") {
       const newData = {
@@ -172,7 +216,9 @@ class Todo extends Component {
         <TodoList
           todos={this.state.todos}
           toggleTodo={this.toggleTodo}
-          removeTodo={this.removeTodo} />
+          removeTodo={this.removeTodo}
+          todoSelected={this.state.todoselected}
+          updateTodoSelected={this.updateTodoSelected} />
         <TodoInput
           todoinput={this.state.todoinput}
           updateInput={this.updateInput}
@@ -186,6 +232,8 @@ class Todo extends Component {
 TodoList.propTypes = {
   todos: PropTypes.array,
   toggleTodo: PropTypes.func,
+  removeTodo: PropTypes.func,
+  todoSelected: PropTypes.string,
 }
 
 TodoListItem.propTypes = {

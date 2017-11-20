@@ -121,3 +121,8 @@ $jp-font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Pin
     color: #909090;
   }
 }
+
+.todo-input--edit {
+  width: calc(100% - 77px);
+  padding: 2px 4px;
+}
