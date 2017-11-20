@@ -22,6 +22,7 @@ class TodoListItem extends Component {
     this.removeTodo = this.removeTodo.bind(this);
     this.updateInput = this.updateInput.bind(this);
     this.selectTodo = this.selectTodo.bind(this);
+    this.keyPress = this.keyPress.bind(this);
   }
 
   _onClick() {
@@ -42,6 +43,14 @@ class TodoListItem extends Component {
     this.props.updateTodoSelected(this.props.todo.id);
   }
 
+  keyPress(e) {
+    const keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+      this.props.updateTodoValue(this.props.todo.id, e.currentTarget.value);
+      this.props.updateTodoSelected("");
+    }
+  }
+
   render() {
     const todoState = this.props.todo.active;
     const buttonState = (todoState ? buttonGreen : buttonPic);
@@ -52,8 +61,9 @@ class TodoListItem extends Component {
           <span className={"todo-text "+todoStateClass}>
             <input
               className="todo-input todo-input--edit"
-              value={this.state.inputvalue}
-              onChange={ this.updateInput } />
+              value={ this.state.inputvalue }
+              onChange={ this.updateInput }
+              onKeyPress={ this.keyPress } autoFocus />
           </span>
         )
       } else {
@@ -99,7 +109,8 @@ const TodoList = (props) => (
           toggleTodo={props.toggleTodo}
           removeTodo={props.removeTodo}
           todoSelected={props.todoSelected}
-          updateTodoSelected={props.updateTodoSelected} />
+          updateTodoSelected={props.updateTodoSelected}
+          updateTodoValue={props.updateTodoValue} />
       )
     })}
   </ul>
@@ -138,6 +149,7 @@ class Todo extends Component {
     this.pressEnter = this.pressEnter.bind(this);
     this.updateFirebase = this.updateFirebase.bind(this);
     this.updateTodoSelected = this.updateTodoSelected.bind(this);
+    this.updateTodoValue = this.updateTodoValue.bind(this);
   }
 
   componentDidMount() {
@@ -198,6 +210,13 @@ class Todo extends Component {
     }
   }
 
+  updateTodoValue(id, value) {
+    if (value !== "") {
+      firebase.database().ref('/todos/'+id+"/value")
+        .set(value)
+    }
+  }
+
   removeTodo(todoItem) {
     firebase.database().ref('/todos/'+todoItem.id).remove()
   }
@@ -218,7 +237,8 @@ class Todo extends Component {
           toggleTodo={this.toggleTodo}
           removeTodo={this.removeTodo}
           todoSelected={this.state.todoselected}
-          updateTodoSelected={this.updateTodoSelected} />
+          updateTodoSelected={this.updateTodoSelected}
+          updateTodoValue={this.updateTodoValue} />
         <TodoInput
           todoinput={this.state.todoinput}
           updateInput={this.updateInput}
