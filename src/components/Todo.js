@@ -99,6 +99,7 @@ class Todo extends Component {
     this.gotData = this.gotData.bind(this);
     this.updateInput = this.updateInput.bind(this);
     this.pressEnter = this.pressEnter.bind(this);
+    this.updateFirebase = this.updateFirebase.bind(this);
   }
 
   componentDidMount() {
