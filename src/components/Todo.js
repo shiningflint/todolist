@@ -23,6 +23,7 @@ class TodoListItem extends Component {
     this.updateInput = this.updateInput.bind(this);
     this.selectTodo = this.selectTodo.bind(this);
     this.keyPress = this.keyPress.bind(this);
+    this._onBlur = this._onBlur.bind(this);
   }
 
   _onClick() {
@@ -51,6 +52,11 @@ class TodoListItem extends Component {
     }
   }
 
+  _onBlur(e) {
+    this.props.updateTodoValue(this.props.todo.id, e.currentTarget.value);
+    this.props.updateTodoSelected("");
+  }
+
   render() {
     const todoState = this.props.todo.active;
     const buttonState = (todoState ? buttonGreen : buttonPic);
@@ -63,7 +69,8 @@ class TodoListItem extends Component {
               className="todo-input todo-input--edit"
               value={ this.state.inputvalue }
               onChange={ this.updateInput }
-              onKeyPress={ this.keyPress } autoFocus />
+              onKeyPress={ this.keyPress }
+              onBlur={ this._onBlur } autoFocus />
           </span>
         )
       } else {
