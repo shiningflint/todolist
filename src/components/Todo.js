@@ -134,7 +134,7 @@ const TodoInput = (props) => (
       <input
         type="text"
         className="todo-input"
-        placeholder="Type a new task..."
+        placeholder="新規追加..."
         value={props.todoinput}
         onChange={props.updateInput}
         onKeyPress={props.pressEnter} />
