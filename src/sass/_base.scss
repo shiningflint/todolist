@@ -114,7 +114,8 @@ $jp-font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Pin
   border-right: 1px solid #d0d0d0;
   border-bottom: 1px solid white;
   font-family: $jp-font;
-  padding: 4px;
+  font-size: 16px;
+  padding: 0 4px;
   color: #545454;
   &::placeholder {
     font-style: italic;
@@ -124,5 +125,5 @@ $jp-font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Pin
 
 .todo-input--edit {
   width: calc(100% - 77px);
-  padding: 2px 4px;
+  padding: 0 4px;
 }

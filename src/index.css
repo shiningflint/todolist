@@ -163,7 +163,8 @@ img {
   border-right: 1px solid #d0d0d0;
   border-bottom: 1px solid white;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Hiragino Kaku Gothic Pro", Meiryo, "Malgun Gothic", "Helvetica Neue", sans-serif;
-  padding: 4px;
+  font-size: 16px;
+  padding: 0 4px;
   color: #545454; }
   .todo-input::placeholder {
     font-style: italic;
@@ -171,6 +172,6 @@ img {
 
 .todo-input--edit {
   width: calc(100% - 77px);
-  padding: 2px 4px; }
+  padding: 0 4px; }
 
 /*# sourceMappingURL=index.css.map */
